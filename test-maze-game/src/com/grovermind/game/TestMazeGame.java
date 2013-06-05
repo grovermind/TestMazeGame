@@ -34,6 +34,7 @@ public class TestMazeGame implements ApplicationListener {
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 		System.out.print("CARLTON SEZ HELLO \n+ + + ATH0");
+		System.out.print("How are you");
 	}
 
 	@Override
