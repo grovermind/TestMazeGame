@@ -8,39 +8,45 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.grovermind.game.maze.Maze;
 
 public class TestMazeGame implements ApplicationListener {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
-	private Sprite sprite;
-	
+	private TextureAtlas textureAtlas;
+	private Maze maze;
+	long lastStepTime;
 	@Override
 	public void create() {		
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(1, h/w);
-		batch = new SpriteBatch();
-		
-		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
+		maze = new Maze(10,10);
+		//maze.generate();
+		//maze.print();
+	
+		textureAtlas = new TextureAtlas("data/testMaze.txt");
+		texture = new Texture(Gdx.files.internal("data/pink.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, maze.getWidth()*64, maze.getHeight()*64);
+		batch = new SpriteBatch();
 		
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
-		System.out.print("CARLTON SEZ HELLO \n+ + + ATH0");
-		System.out.print("How are you");
+		
+		
+
+
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
-		texture.dispose();
+		textureAtlas.dispose();
 	}
 
 	@Override
@@ -50,8 +56,31 @@ public class TestMazeGame implements ApplicationListener {
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		sprite.draw(batch);
+		for(int i = 0; i < maze.getWidth(); i++){
+			for(int j = 0; j < maze.getHeight(); j++){
+				for(String dir : maze.getCarvedDirectionsByCellCoordinates(i, j))
+					if(!dir.equals("")){
+						batch.draw(textureAtlas.findRegion(dir), 64*i ,64*j);
+					}
+				if( maze.getCellVisited(i, j)&&!maze.getCellDoneCarving(i, j)){
+					batch.draw(texture, 64*i ,64*j);
+				}
+			}
+		
+		
+		}
+		
+		//batch.dra
+		//batch.draw(regionSouth, 64, 0);
+		//batch.draw(regionWest, 96, 0);
 		batch.end();
+		
+		if(TimeUtils.nanoTime() - lastStepTime > 100000000) { 
+			maze.step(); 
+			lastStepTime = TimeUtils.nanoTime();
+		}
+		
+		
 	}
 
 	@Override
