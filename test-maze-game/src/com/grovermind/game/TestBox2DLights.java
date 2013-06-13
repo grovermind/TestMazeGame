@@ -2,8 +2,6 @@ package com.grovermind.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.grovermind.game.maze.Maze;
 
-public class TestMazeGame implements ApplicationListener {
+public class TestBox2DLights implements ApplicationListener {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
@@ -53,8 +51,6 @@ public class TestMazeGame implements ApplicationListener {
 
 	@Override
 	public void render() {		
-
-		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
@@ -110,27 +106,9 @@ public class TestMazeGame implements ApplicationListener {
 			maze.step(); 
 			lastStepTime = TimeUtils.nanoTime();
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if (camera.position.x > 0)
-                    camera.translate(-3, 0, 0);
-	    }
-	    if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-	            if (camera.position.x < maze.getWidth()*64)
-	                    camera.translate(3, 0, 0);
-	    }
-	    if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-	            if (camera.position.y > 0)
-	                    camera.translate(0, -3, 0);
-	    }
-	    if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-	            if (camera.position.y < maze.getHeight()*64)
-	                    camera.translate(0, 3, 0);
-	    }
-		if(Gdx.input.isKeyPressed(Keys.A))   camera.zoom += .01;
-		if(Gdx.input.isKeyPressed(Keys.Q))  camera.zoom -= .01;
-		camera.update();
+		
+		
 	}
-	
 
 	@Override
 	public void resize(int width, int height) {
