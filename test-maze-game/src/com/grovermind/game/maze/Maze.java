@@ -43,7 +43,7 @@ public class Maze {
 	
 
 	public void step(){
-		if(cells.size > 0){
+		if(cells.size > 0) {
 			int cellIndex = 0;
 			int randomMethod = MathUtils.random(1)+1;
 
