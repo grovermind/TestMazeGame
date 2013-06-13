@@ -25,7 +25,7 @@ public class TestMazeGame implements ApplicationListener {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		maze = new Maze(10,10);
+		maze = new Maze(20,20);
 		//maze.generate();
 		//maze.print();
 	
@@ -75,7 +75,7 @@ public class TestMazeGame implements ApplicationListener {
 		//batch.draw(regionWest, 96, 0);
 		batch.end();
 		
-		if(TimeUtils.nanoTime() - lastStepTime > 100000000) { 
+		if(TimeUtils.nanoTime() - lastStepTime > 10000000) { 
 			maze.step(); 
 			lastStepTime = TimeUtils.nanoTime();
 		}
