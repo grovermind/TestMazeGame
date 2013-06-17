@@ -3,14 +3,18 @@ package com.grovermind.game.maze;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
+
 public class Maze {
 	private int width;
 	public int getWidth(){return width;}
 	private int height;
-	public int getHeight(){return width;}
+	public int getHeight(){return height;}
 	private Cell[][] grid;
 	private Array<Cell> cells;
 	private Array<Direction> directions;
+	private boolean doneGenerating = false;
+	public boolean isDoneGenerating(){return doneGenerating;}
+
 	
 	public Maze(int width, int height){
 		this.width = width;
@@ -43,6 +47,7 @@ public class Maze {
 	
 
 	public void step(){
+		
 		if(cells.size > 0) {
 			int cellIndex = 0;
 			int randomMethod = MathUtils.random(1)+1;
@@ -84,19 +89,20 @@ public class Maze {
 			}
 			if(!hasCarved){
 				cell.setCarvingComplete();
-				cells.removeIndex(cellIndex);
+				cells.removeIndex(cellIndex);				
 			}
 		}
 		else {
 			grid[0][height-1].carve(Direction.WEST);
 			grid[width-1][0].carve(Direction.EAST);
+			doneGenerating = true;
 		}
 	}
 	
 	public void generate(){
 		while (cells.size > 0){
 			step();
-		}
+		}		
 	}
 	
 
@@ -118,8 +124,8 @@ public class Maze {
 	public boolean getCellVisited(int x, int y){
 		return grid[x][y].hasBeenVisited();
 	}
-	public boolean getCellDoneCarving(int x, int y){
-		return grid[x][y].isDoneCarving();
+	public boolean getCellDoneCarving(int x, int y){		
+		return grid[x][y].isDoneCarving();		
 	}
 
 
@@ -134,7 +140,7 @@ public class Maze {
 		
 		private boolean doneCarving = false;
 		public boolean isDoneCarving(){return doneCarving;}
-		
+				
 		private Cell(int x, int y){
 			this.x = x;
 			this.y = y;
@@ -170,6 +176,23 @@ public class Maze {
 			this.y = y;
 			this.bitValue = bitValue;
 		}
+	}
+	public float[] getLocation(float x, float y){		
+		if (x < 0) {x = 0;}
+		if (x > getWidth() * 64 - 16) {x = getWidth() * 64 - 16;}
+		if (y < 0) {y = 0;}
+		if (y > getHeight() * 64 - 16) {y = getHeight() * 64 - 16;}		
+		float location[] = {x, y};
+		location = gridSnap(x, y);		
+		x = location[0] * 32 - 16;
+		y = location[1] * 32 - 16;
+		return new float[] {x,y};
+	}
+	
+	private float[] gridSnap(float x, float y){	
+		int xGrid = Math.round(x/32);
+		int yGrid = Math.round(y/32);		
+		return new float[] {xGrid, yGrid};
 	}
 
 }
