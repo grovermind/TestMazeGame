@@ -13,9 +13,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.grovermind.game.maze.Maze;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.grovermind.game.maze.Maze;
+import com.grovermind.game.maze.Nav;
 
 public class TestMazeGame implements ApplicationListener {
 	private OrthographicCamera camera;
@@ -27,6 +28,7 @@ public class TestMazeGame implements ApplicationListener {
 	private Texture littleManImage;
 	private Rectangle littleMan;
 	private Maze maze;
+	private Nav nav;
 	long lastStepTime;
 	boolean started = false;
 	boolean finished = false;	
@@ -36,7 +38,8 @@ public class TestMazeGame implements ApplicationListener {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		maze = new Maze(10,10);
+		maze = new Maze(20,20);
+		nav  = new Nav(maze);
 	
 		textureAtlas = new TextureAtlas("data/testMazeII.txt");		
 		drawTexture = new Texture(Gdx.files.internal("data/pink.png"));
@@ -96,7 +99,9 @@ public class TestMazeGame implements ApplicationListener {
 					}
 				}
 				if( maze.getCellVisited(i, j)&&!maze.getCellDoneCarving(i, j)){
+
 					batch.draw(drawTexture, 64*i ,64*j);
+					
 				}
 			}		
 		}
@@ -131,7 +136,7 @@ public class TestMazeGame implements ApplicationListener {
 				Vector3 touchPos = new Vector3();
 				touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 				camera.unproject(touchPos);
-				float location[] = maze.getLocation(touchPos.x, touchPos.y); 
+				float location[] = nav.getLocation(touchPos.x, touchPos.y); 
 				littleMan.x = location[0];
 				littleMan.y = location[1];					
 			}
@@ -154,7 +159,7 @@ public class TestMazeGame implements ApplicationListener {
 	                    camera.translate(0, 3, 0);
 	    }
 		if(Gdx.input.isKeyPressed(Keys.A))   camera.zoom += .01;
-		if(Gdx.input.isKeyPressed(Keys.Q))  camera.zoom -= .01;
+		if(Gdx.input.isKeyPressed(Keys.Q))   camera.zoom -= .01;
 		camera.update();		
 	}
 	

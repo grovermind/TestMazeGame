@@ -14,7 +14,6 @@ public class Maze {
 	private Array<Direction> directions;
 	private boolean doneGenerating = false;
 	public boolean isDoneGenerating(){return doneGenerating;}
-
 	
 	public Maze(int width, int height){
 		this.width = width;
@@ -177,22 +176,6 @@ public class Maze {
 			this.bitValue = bitValue;
 		}
 	}
-	public float[] getLocation(float x, float y){		
-		if (x < 0) {x = 0;}
-		if (x > getWidth() * 64 - 16) {x = getWidth() * 64 - 16;}
-		if (y < 0) {y = 0;}
-		if (y > getHeight() * 64 - 16) {y = getHeight() * 64 - 16;}		
-		float location[] = {x, y};
-		location = gridSnap(x, y);		
-		x = location[0] * 32 - 16;
-		y = location[1] * 32 - 16;
-		return new float[] {x,y};
-	}
-	
-	private float[] gridSnap(float x, float y){	
-		int xGrid = Math.round(x/32);
-		int yGrid = Math.round(y/32);		
-		return new float[] {xGrid, yGrid};
-	}
+
 
 }
