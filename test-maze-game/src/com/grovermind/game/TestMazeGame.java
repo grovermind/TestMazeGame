@@ -38,7 +38,7 @@ public class TestMazeGame implements ApplicationListener {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		maze = new Maze(20,20);
+		maze = new Maze(10,10);
 		nav  = new Nav(maze);
 	
 		textureAtlas = new TextureAtlas("data/testMazeII.txt");		
